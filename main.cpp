@@ -1,3 +1,4 @@
+// include required libraries
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -7,9 +8,7 @@
 #include <cstdlib>
 using namespace std;
 
-//-----------------------------
-// Custom Templated Matrix Class
-//-----------------------------
+// matrix class
 template <typename T>
 class Matrix {
 private:
@@ -37,9 +36,9 @@ public:
         return is;
     }
 
-    // Overload stream insertion for nicely formatted output
+    // Overload stream insertion for formatted output
     friend ostream& operator<<(ostream &os, const Matrix<T>& m) {
-        // Adjust width for alignment (adjust if needed)
+        // Adjust width for alignment if needed
         int width = 8;
         for (size_t i = 0; i < m.n; i++) {
             for (size_t j = 0; j < m.n; j++) {
@@ -50,7 +49,7 @@ public:
         return os;
     }
 
-    // Overload addition operator for matrices
+    // Overload addition
     Matrix<T> operator+(const Matrix<T>& other) const {
         if (n != other.n) {
             throw invalid_argument("Matrix sizes do not match for addition.");
@@ -64,7 +63,7 @@ public:
         return result;
     }
 
-    // Overload multiplication operator for matrix multiplication
+    // Overload multiplication
     Matrix<T> operator*(const Matrix<T>& other) const {
         if (n != other.n) {
             throw invalid_argument("Matrix sizes do not match for multiplication.");
@@ -83,24 +82,21 @@ public:
     }
 };
 
-//---------------------------------------
 // Function: Compute diagonal element sums
-//---------------------------------------
 template <typename T>
 void diagonalSums(const Matrix<T>& m) {
     size_t n = m.size();
     T mainSum = 0, secSum = 0;
     for (size_t i = 0; i < n; i++) {
-        mainSum += m.getData()[i][i];         // Main diagonal (top-left to bottom-right)
-        secSum += m.getData()[i][n - 1 - i];    // Secondary diagonal (top-right to bottom-left)
+        mainSum += m.getData()[i][i];         // top-left to bottom-right
+        secSum += m.getData()[i][n - 1 - i];    // top-right to bottom-left
     }
-    cout << "Sum of main diagonal elements: " << mainSum << "\n";
+    cout << "Sum of main diagonal elements: " << mainSum << "\n"; //output
     cout << "Sum of secondary diagonal elements: " << secSum << "\n";
 }
 
-//---------------------------------------
+
 // Function: Swap two rows in the matrix
-//---------------------------------------
 template <typename T>
 void swapRows(Matrix<T>& m, size_t r1, size_t r2) {
     if (r1 >= m.size() || r2 >= m.size()){
@@ -112,9 +108,8 @@ void swapRows(Matrix<T>& m, size_t r1, size_t r2) {
     cout << m;
 }
 
-//---------------------------------------
+
 // Function: Swap two columns in the matrix
-//---------------------------------------
 template <typename T>
 void swapCols(Matrix<T>& m, size_t c1, size_t c2) {
     size_t n = m.size();
@@ -129,31 +124,27 @@ void swapCols(Matrix<T>& m, size_t c1, size_t c2) {
     cout << m;
 }
 
-//---------------------------------------
 // Function: Update a specific matrix element
-//---------------------------------------
 template <typename T>
 void updateElement(Matrix<T>& m, size_t row, size_t col, T newVal) {
     if (row >= m.size() || col >= m.size()){
-        cout << "Indices out of bounds.\n";
+        cout << "Indices out of bounds.\n"; //output
         return;
     }
     m.getData()[row][col] = newVal;
-    cout << "Matrix after updating element at (" << row << ", " << col << "):\n";
+    cout << "Matrix after updating element at (" << row << ", " << col << "):\n"; //output
     cout << m;
 }
 
-//---------------------------------------
 // Main: Process input file and test functions
-//---------------------------------------
 int main(){
     string filename;
-    cout << "Enter the input filename: ";
+    cout << "Enter the input filename: "; // ask user to input the filename
     getline(cin, filename);
 
     ifstream fin(filename);
     if (!fin) {
-        cerr << "Error opening file " << filename << "\n";
+        cerr << "Error opening file " << filename << "\n"; // error
         return 1;
     }
 
@@ -182,13 +173,13 @@ int main(){
             cout << "Diagonal sums for Matrix A:\n";
             diagonalSums(A);
 
-            // Swap two rows (demonstration: swap first and last row)
+            // Swap two rows
             swapRows(A, 0, N - 1);
 
-            // Swap two columns (demonstration: swap first and last column)
+            // Swap two columns
             swapCols(A, 0, N - 1);
 
-            // Update an element (demonstration: update element at row 1, col 1 to 99)
+            // Update an element
             updateElement(A, 1, 1, 99);
         }
         else if (typeFlag == 1) {
